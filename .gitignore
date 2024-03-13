@@ -19,3 +19,17 @@
 
 # Go workspace file
 go.work
+
+
+# Ignore image files
+*.jpg
+*.png
+*.jpeg
+*.ico
+*.tiff
+*.gif
+*.svg
+*.webp
+
+# Ignore .idea directory
+**/.idea/
