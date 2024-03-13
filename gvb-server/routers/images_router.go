@@ -7,5 +7,6 @@ func (router RouterGroup) ImagesRouter() {
 	router.GET("images", ImagesApi.ImageListView)      // 127.0.0.1:8080/api/images?limit=5&page=2
 	router.POST("images", ImagesApi.ImageUploadView)   // 127.0.0.1:8080/api/images  图片
 	router.DELETE("images", ImagesApi.ImageRemoveView) // (Body row json) "id_list": [1,2,3,4]
+	router.PUT("images", ImagesApi.ImageUpdateView)    // (Body row json) {"id": 7, "name": "彩彩彩"}
 
 }

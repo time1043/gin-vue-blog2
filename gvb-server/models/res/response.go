@@ -3,6 +3,7 @@ package res
 import (
 	"github.com/gin-gonic/gin"
 	"net/http"
+	"time1043/gvb-server/utils"
 )
 
 type Response struct {
@@ -40,17 +41,21 @@ func OkWithList(count int64, list any, ctx *gin.Context) {
 	OkWithData(ListResponse[any]{Count: count, List: list}, ctx)
 }
 
-func Fail(data any, msg string, c *gin.Context) {
-	Result(Error, data, msg, c)
+func Fail(data any, msg string, ctx *gin.Context) {
+	Result(Error, data, msg, ctx)
 }
-func FailWithMessage(msg string, c *gin.Context) {
-	Result(Error, map[string]any{}, msg, c)
+func FailWithMessage(msg string, ctx *gin.Context) {
+	Result(Error, map[string]any{}, msg, ctx)
 }
-func FailWithCode(code ErrorCode, c *gin.Context) {
+func FailWithError(err error, obj any, ctx *gin.Context) {
+	msg := utils.GetValidMsg(err, obj)
+	FailWithMessage(msg, ctx)
+}
+func FailWithCode(code ErrorCode, ctx *gin.Context) {
 	msg, ok := ErrorMap[code]
 	if ok {
-		Result(int(code), map[string]any{}, msg, c)
+		Result(int(code), map[string]any{}, msg, ctx)
 		return
 	}
-	Result(Error, map[string]any{}, "未知错误", c)
+	Result(Error, map[string]any{}, "未知错误", ctx)
 }
