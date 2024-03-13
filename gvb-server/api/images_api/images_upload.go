@@ -10,7 +10,9 @@ import (
 	"strings"
 	"time1043/gvb-server/global"
 	"time1043/gvb-server/models"
+	"time1043/gvb-server/models/ctype"
 	"time1043/gvb-server/models/res"
+	"time1043/gvb-server/plugins/qiniu"
 	"time1043/gvb-server/utils"
 )
 
@@ -97,6 +99,27 @@ func (ImagesApi) ImageUploadView(ctx *gin.Context) {
 			continue
 		}
 
+		// 是否启用七牛云存储
+		if global.Config.QiNiu.Enable {
+			filePath, err = qiniu.UploadImage(byteData, filename, "gvb")
+			if err != nil {
+				global.Log.Error(err)
+				continue
+			}
+			resList = append(resList, FileUploadResponse{
+				FileName:  filePath,
+				IsSuccess: true,
+				Msg:       "七牛云存储上传成功",
+			})
+			global.DB.Create(&models.BannerModel{
+				Path:      filePath,
+				Hash:      imageHash,
+				Name:      filename,
+				ImageType: ctype.QiNiu,
+			})
+			continue
+		}
+
 		// 文件写入
 		err = ctx.SaveUploadedFile(file, filePath)
 		if err != nil {
@@ -117,9 +140,10 @@ func (ImagesApi) ImageUploadView(ctx *gin.Context) {
 
 		// 图片写入数据库
 		global.DB.Create(&models.BannerModel{
-			Path: filePath,
-			Hash: imageHash,
-			Name: filename,
+			Path:      filePath,
+			Hash:      imageHash,
+			Name:      filename,
+			ImageType: ctype.Local,
 		})
 
 	}
