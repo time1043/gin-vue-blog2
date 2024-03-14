@@ -31,5 +31,8 @@ go.work
 *.svg
 *.webp
 
+# Ignore yaml files
+*.yaml
+
 # Ignore .idea directory
 **/.idea/
