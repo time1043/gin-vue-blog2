@@ -1,6 +1,7 @@
 package api
 
 import (
+	"time1043/gvb-server/api/advert_api"
 	"time1043/gvb-server/api/images_api"
 	"time1043/gvb-server/api/settings_api"
 )
@@ -8,6 +9,7 @@ import (
 type ApiGroup struct {
 	SettingApi settings_api.SettingApi
 	ImagesApi  images_api.ImagesApi
+	AdvertApi  advert_api.AdvertApi
 }
 
 var ApiGroupApp = new(ApiGroup)

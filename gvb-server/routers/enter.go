@@ -17,6 +17,7 @@ func InitRouter() *gin.Engine {
 	routerGroupApp := RouterGroup{apiRouterGroup} // 路由分层
 	routerGroupApp.SettingsRouter()               // 系统配置api
 	routerGroupApp.ImagesRouter()                 // 图片管理api
+	routerGroupApp.AdvertRouter()                 // 广告管理api
 
 	return router
 }
