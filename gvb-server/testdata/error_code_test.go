@@ -1,10 +1,11 @@
-package main
+package testdata
 
 import (
 	"encoding/json"
 	"fmt"
 	"github.com/sirupsen/logrus"
 	"os"
+	"testing"
 	"time1043/gvb-server/models/res"
 )
 
@@ -12,7 +13,7 @@ const file = "models/res/err_code.json"
 
 type ErrMap map[res.ErrorCode]string
 
-func main() {
+func TestErrorCode(t *testing.T) {
 	byteData, err := os.ReadFile(file)
 	if err != nil {
 		logrus.Error(err)
