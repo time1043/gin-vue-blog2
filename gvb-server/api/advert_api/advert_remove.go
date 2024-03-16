@@ -8,6 +8,14 @@ import (
 	"time1043/gvb-server/models/res"
 )
 
+// AdvertRemoveView 批量删除广告
+// @Tags 广告管理
+// @Summary 批量删除广告
+// @Description 批量删除广告
+// @Param data body models.RemoveRequest true "广告id列表"
+// @Router /api/advert [delete]
+// @Produce json
+// @Success 200 {object} res.Response{data=string}
 func (AdvertApi) AdvertRemoveView(ctx *gin.Context) {
 	// 删除需要传入请求参数
 	var cr models.RemoveRequest

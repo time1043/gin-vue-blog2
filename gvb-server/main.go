@@ -2,11 +2,17 @@ package main
 
 import (
 	"time1043/gvb-server/core"
+	_ "time1043/gvb-server/docs"
 	"time1043/gvb-server/flag"
 	"time1043/gvb-server/global"
 	"time1043/gvb-server/routers"
 )
 
+// @title gvb-server API文档
+// @version 1.0
+// @description gvb-server API文档
+// @host 127.0.0.1:8080
+// @BasePath /
 func main() {
 	core.InitConf()                // 读取配置文件
 	global.Log = core.InitLogger() // 初始化日志
