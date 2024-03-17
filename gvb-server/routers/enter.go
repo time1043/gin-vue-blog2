@@ -21,6 +21,7 @@ func InitRouter() *gin.Engine {
 	routerGroupApp.SettingsRouter()               // 系统配置api
 	routerGroupApp.ImagesRouter()                 // 图片管理api
 	routerGroupApp.AdvertRouter()                 // 广告管理api
+	routerGroupApp.MenuRouter()                   // 菜单管理api
 
 	return router
 }
