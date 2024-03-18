@@ -1,13 +1,17 @@
 <template>
   <div class="gvb_tabs">
-    <span
-        :class="{gvb_tab:true, active:route.name===item.name}"
-        @click="clickTab(item)"
-        @click.middle="closeTab(item)"
-        v-for="item in tabList" :key="item.name">
+    <swiper :slides-per-view="slidesPerView" class="mySwiper">
+      <swiper-slide v-for="(item, index) in tabList" :key="item.name">
+        <span
+            :class="{gvb_tab:true, active:route.name===item.name}"
+            @click="clickTab(item)"
+            @click.middle="closeTab(item)">
             {{ item.title }}
             <IconClose @click.stop="closeTab(item)" v-if="item.name!=='home'"></IconClose>
         </span>
+      </swiper-slide>
+    </swiper>
+
     <span class="gvb_tab close_all_tab" @click="closeAllTab">全部关闭</span>
 
   </div>
@@ -18,7 +22,7 @@
 <script setup lang="ts">
 import {IconClose} from "@arco-design/web-vue/es/icon";
 import type {Ref} from "vue";
-import {ref, watch} from "vue";
+import {ref, watch, onMounted} from "vue";
 import {useRoute, useRouter} from "vue-router";
 import {Swiper, SwiperSlide} from "swiper/vue";
 
@@ -115,6 +119,30 @@ function loadTabs() {
 
 loadTabs()
 
+const slidesPerView = ref(12);
+
+onMounted(() => {
+  // 总宽度 实际宽度
+  let mySwiperWith = document.querySelector(".mySwiper").clientWidth
+  let actualWidth = document.querySelector(".swiper-wrapper").scrollWidth
+
+  if (actualWidth < mySwiperWith) {
+    return
+  }
+
+  let swiperSlideList = document.querySelectorAll(".swiper-wrapper .swiper-slide")
+  let sum = 0
+  let count = 0
+  for (const slide of swiperSlideList) {
+    sum += slide.clientWidth
+    if (sum > mySwiperWith) {
+      break
+    }
+    count++
+  }
+  slidesPerView.value = count
+})
+
 </script>
 
 
@@ -127,6 +155,26 @@ loadTabs()
   display: flex;
   align-items: center;
   position: relative;
+  background-color: var(--color-bg-1);
+
+  .mySwiper {
+    width: calc(100% - 94px);
+    overflow: hidden;
+    white-space: nowrap;
+    height: 100%;
+    display: flex;
+    align-items: center;
+
+    .swiper-wrapper {
+      display: flex;
+      justify-content: start;
+      width: 100%;
+
+      .swiper-slide {
+        width: auto !important;
+      }
+    }
+  }
 
   .gvb_tab {
     border-radius: 5px;

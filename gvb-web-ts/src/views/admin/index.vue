@@ -12,18 +12,15 @@
         <gvb_bread_crumb></gvb_bread_crumb>
 
         <div class="gvb_function_area">
-          <IconMenu class="action_icon"></IconMenu>
-
-          <div class="gvb_theme">
-            <IconSun class="action_icon"></IconSun>
-          </div>
+          <IconHome class="action_icon" @click="goIndex"></IconHome>
+          <Gvb_theme></Gvb_theme>
 
           <div class="gvb_user_info_menu">
             <a-dropdown>
               <div class="gvb_user_info_menu_dropdown">
                 <img src="/image/user_head.jpg">
                 <span class="gvb_user_info_menu_dropdown_span">time1043</span>
-                <IconDown></IconDown>
+                <IconMenu></IconMenu>
               </div>
               <template #content>
                 <a-doption>Option 1</a-doption>
@@ -54,31 +51,23 @@
 
 
 <script setup lang="ts">
+import Gvb_theme from "@/components/common/gvb_theme.vue";
 import Gvb_tabs from "@/components/admin/gvb_tabs.vue";
 import Gvb_logo from "@/components/admin/gvb_logo.vue";
 import Gvb_menu from "@/components/admin/gvb_menu.vue";
 import Gvb_bread_crumb from "@/components/admin/gvb_bread_crumb.vue";
-import {
-  IconMenu,
-  IconSun,
-  IconApps,
-  IconBug,
-  IconUser,
-  IconBulb,
-  IconDown,
-} from '@arco-design/web-vue/es/icon';
+import {IconHome, IconMenu,} from '@arco-design/web-vue/es/icon';
 import type {Component} from "vue";
-import {useRouter} from "vue-router";
-import type {RouteMeta} from "vue-router";
-import {useRoute} from "vue-router";
-import {ref} from "vue";
+import {useRoute, useRouter} from "vue-router";
 
 const router = useRouter()
 const route = useRoute()
 
-interface MetaType extends RouteMeta {
-  title: string
+function goIndex() {
+  router.push({name: "index"})
 }
+
+
 </script>
 
 
@@ -92,7 +81,7 @@ interface MetaType extends RouteMeta {
     width: 240px;
     border-right: 1px solid var(--bg);
     height: 100vh;
-
+    background-color: var(--color-bg-1);
   }
 
   main {
@@ -108,6 +97,7 @@ interface MetaType extends RouteMeta {
       justify-content: space-between;
       padding: 0 20px;
       align-items: center;
+      background-color: var(--color-bg-1);
 
       .gvb_function_area {
         display: flex;
@@ -117,6 +107,11 @@ interface MetaType extends RouteMeta {
           margin-right: 10px;
           cursor: pointer;
           font-size: 16px;
+          transition: color .3s;
+
+          &:hover{
+            color: var(--active);
+          }
         }
 
         .gvb_user_info_menu {

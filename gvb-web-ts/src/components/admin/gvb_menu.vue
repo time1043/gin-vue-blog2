@@ -29,7 +29,7 @@
 
 
 <script setup lang="ts">
-import {ref} from "vue";
+import {ref, watch} from "vue";
 import type {Component} from "vue";
 import {useRoute, useRouter} from "vue-router";
 import type {RouteMeta} from "vue-router";
@@ -88,6 +88,11 @@ const openKeys = ref([route.matched[1].name])
 function clickMenu(name: string) {
   router.push({name: name})
 }
+
+watch(() => route.name, () => {
+  selectedKey.value = [route.name]
+  openKeys.value = [route.matched[1].name]
+})
 </script>
 
 
