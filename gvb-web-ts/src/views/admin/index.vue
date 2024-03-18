@@ -1,52 +1,16 @@
 <template>
   <div class="gvb_admin">
     <aside>
-      <div class="gvb_logo">
-        <img src="/image/logo.jpg">
-        <div class="logo_head">
-          <div>时间1043</div>
-          <div>time1043</div>
-        </div>
-      </div>
-
-      <div class="gvb_menu">
-        <a-menu
-            @menu-item-click="clickMenu"
-            v-model:selected-keys="selectedKey"
-            v-model:open-keys="openKeys"
-        >
-          <template v-for="item in menuList" :key="item.key">
-            <a-menu-item :key="item.name" v-if="item.child?.length === 0">
-              {{ item.title }}
-              <template #icon>
-                <component :is="item.icon"></component>
-              </template>
-            </a-menu-item>
-
-            <a-sub-menu :key="item.name" v-if="item.child?.length !== 0">
-              <template #icon>
-                <component :is="item.icon"></component>
-              </template>
-              <template #title>{{ item.title }}</template>
-              <a-menu-item :key="sub.name" v-for="sub in item.child">{{ sub.title }}</a-menu-item>
-            </a-sub-menu>
-          </template>
-
-        </a-menu>
-      </div>
-
+      <Gvb_logo></Gvb_logo>
+      <Gvb_menu></Gvb_menu>
     </aside>
 
 
     <main>
       <div class="gvb_head">
-        <div class="gvb_bread_crumbs">
-          <a-breadcrumb>
-            <a-breadcrumb-item>Home</a-breadcrumb-item>
-            <a-breadcrumb-item>Channel</a-breadcrumb-item>
-            <a-breadcrumb-item>News</a-breadcrumb-item>
-          </a-breadcrumb>
-        </div>
+
+        <gvb_bread_crumb></gvb_bread_crumb>
+
         <div class="gvb_function_area">
           <IconMenu class="action_icon"></IconMenu>
 
@@ -74,11 +38,7 @@
         </div>
       </div>
 
-      <div class="gvb_tabs">
-        <span class="gvb_tab active">首页</span>
-        <span class="gvb_tab">用户列表</span>
-        <span class="gvb_tab">文章列表</span>
-      </div>
+      <Gvb_tabs></Gvb_tabs>
 
       <div class="gvb_container">
         <router-view v-slot="{Component}">
@@ -94,6 +54,10 @@
 
 
 <script setup lang="ts">
+import Gvb_tabs from "@/components/admin/gvb_tabs.vue";
+import Gvb_logo from "@/components/admin/gvb_logo.vue";
+import Gvb_menu from "@/components/admin/gvb_menu.vue";
+import Gvb_bread_crumb from "@/components/admin/gvb_bread_crumb.vue";
 import {
   IconMenu,
   IconSun,
@@ -105,61 +69,16 @@ import {
 } from '@arco-design/web-vue/es/icon';
 import type {Component} from "vue";
 import {useRouter} from "vue-router";
+import type {RouteMeta} from "vue-router";
 import {useRoute} from "vue-router";
 import {ref} from "vue";
 
 const router = useRouter()
 const route = useRoute()
 
-interface MenuType {
-  key: string
+interface MetaType extends RouteMeta {
   title: string
-  icon?: Component
-  name?: string// 路由名字
-  child?: MenuType[]
 }
-
-const menuList: MenuType[] = [
-  {key: "1", title: "首页", icon: IconMenu, name: "home", child: []},
-  {
-    key: "2", title: "个人中心", icon: IconUser, name: "user_center", child: [
-      {key: "2-1", title: "我的信息", icon: IconUser, name: "user_info"},
-    ]
-  },
-  {
-    key: "3", title: "文章管理", icon: IconMenu, name: "article", child: [
-      {key: "3-1", title: "文章列表", icon: IconUser, name: "article_list"},
-    ]
-  },
-  {
-    key: "4", title: "用户管理", icon: IconMenu, name: "users", child: [
-      {key: "4-1", title: "用户列表", icon: IconUser, name: "user_list"},
-
-    ]
-  },
-  {
-    key: "5", title: "群聊管理", icon: IconMenu, name: "chat_group", child: [
-      {key: "5-1", title: "聊天记录", icon: IconUser, name: "char_list"},
-
-    ]
-  },
-  {
-    key: "6", title: "系统管理", icon: IconMenu, name: "system", child: [
-      {key: "6-1", title: "菜单列表", icon: IconUser, name: "menu_list"},
-
-    ]
-  },
-]
-
-console.log(route.name, route)
-const selectedKey = ref([route.name])
-const openKeys = ref([route.matched[1].name])
-
-function clickMenu(name: string) {
-  // console.log(name)  // user_list  menu_list
-  router.push({name: name})
-}
-
 </script>
 
 
@@ -167,42 +86,19 @@ function clickMenu(name: string) {
 .gvb_admin {
   display: flex;
   color: var(--color-text-1);
+  height: 100vh;
 
   aside {
     width: 240px;
     border-right: 1px solid var(--bg);
     height: 100vh;
 
-    .gvb_logo {
-      height: 90px;
-      display: flex;
-      padding: 20px;
-      align-items: center;
-      border-bottom: 1px solid var(--bg);
-
-      img {
-        width: 60px;
-        height: 60px;
-      }
-
-      .logo_head {
-        margin-left: 20px;
-
-        > div:nth-child(1) {
-          font-size: 22px;
-          font-weight: 600;
-          margin-bottom: 2px;
-        }
-
-        > div:nth-child(2) {
-          font-size: 12px;
-        }
-      }
-    }
   }
 
   main {
     width: calc(100% - 240px);
+    overflow-x: hidden;
+    overflow-y: auto;
 
     .gvb_head {
       width: 100%;
@@ -244,37 +140,32 @@ function clickMenu(name: string) {
 
     }
 
-    .gvb_tabs {
-      height: 30px;
-      width: 100%;
-      border-bottom: 1px solid var(--bg);
-      padding: 0 20px;
-      display: flex;
-      align-items: center;
-
-      .gvb_tab {
-        border-radius: 5px;
-        border: 1px solid var(--bg);
-        padding: 2px 8px;
-        margin-right: 10px;
-        cursor: pointer;
-
-        &.active {
-          background-color: var(--active);
-          color: white;
-          border: none;
-        }
-      }
-    }
-
     .gvb_container {
       background-color: var(--bg);
       min-height: calc(100vh - 90px);
       padding: 20px;
     }
 
-
   }
 
+}
+
+.fade-leave-to {
+  opacity: 0;
+  transform: translateX(30px);
+}
+
+.fade-enter-active {
+  transform: translateX(-30px);
+  opacity: 0;
+}
+
+.fade-enter-to {
+  transform: translateX(0px);
+  opacity: 1;
+}
+
+.fade-leave-active, .fade-enter-active {
+  transition: all 0.3s ease-out;
 }
 </style>
