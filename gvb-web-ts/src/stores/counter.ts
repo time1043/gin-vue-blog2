@@ -1,12 +1,30 @@
-import {ref, computed} from 'vue'
 import {defineStore} from 'pinia'
-import {getFiles} from "@arco-design/web-vue/es/upload/utils";
 
-const theme = true
+export interface userInfoType {
+    nick_name: string
+    role: number  // 角色
+    user_id: number  // 用户id
+    avatar: string
+    token: string
+}
+
+const theme: boolean = true
+const collapsed: boolean = false
+const userInfo: userInfoType = {
+    nick_name: "plktime1043",
+    role: 0,
+    user_id: 0,
+    avatar: "http://localhost:5173/image/user_head.jpg",
+    token: "",
+}
 
 export const useStore = defineStore('counter', {
     state() {
-        return {theme: theme}
+        return {
+            theme: theme,
+            collapsed: collapsed, // 侧边栏默认一开始不折叠
+            userInfo: userInfo,
+        }
     },
     actions: {
         setTheme(localTheme?: boolean) {
@@ -32,7 +50,10 @@ export const useStore = defineStore('counter', {
                 return;
             }
             let obj = JSON.parse(val)
-            console.log(obj)
+            // console.log(obj)
+        },
+        setCollapsed(collapsed: boolean) {
+            this.collapsed = collapsed
         }
     },
     getters: {

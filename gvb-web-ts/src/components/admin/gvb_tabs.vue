@@ -25,11 +25,8 @@ import type {Ref} from "vue";
 import {ref, watch, onMounted} from "vue";
 import {useRoute, useRouter} from "vue-router";
 import {Swiper, SwiperSlide} from "swiper/vue";
+import type {tabType} from "@/types";
 
-interface tabType {
-  name: string
-  title: string
-}
 
 const route = useRoute()
 const router = useRouter();
@@ -93,7 +90,7 @@ function closeTab(item: tabType) {
 
 // 持久化存储
 function persistence() {
-  console.log(tabList.value)
+  // console.log(tabList.value)
   localStorage.setItem("tabList", JSON.stringify(tabList.value))
 }
 
@@ -123,8 +120,8 @@ const slidesPerView = ref(12);
 
 onMounted(() => {
   // 总宽度 实际宽度
-  let mySwiperWith = document.querySelector(".mySwiper").clientWidth
-  let actualWidth = document.querySelector(".swiper-wrapper").scrollWidth
+  let mySwiperWith = document.querySelector(".mySwiper")!.clientWidth
+  let actualWidth = document.querySelector(".swiper-wrapper")!.scrollWidth
 
   if (actualWidth < mySwiperWith) {
     return

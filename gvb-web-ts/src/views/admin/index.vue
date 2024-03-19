@@ -1,10 +1,9 @@
 <template>
   <div class="gvb_admin">
-    <aside>
+    <aside :class="{collapsed:store.collapsed}">
       <Gvb_logo></Gvb_logo>
       <Gvb_menu></Gvb_menu>
     </aside>
-
 
     <main>
       <div class="gvb_head">
@@ -14,24 +13,7 @@
         <div class="gvb_function_area">
           <IconHome class="action_icon" @click="goIndex"></IconHome>
           <Gvb_theme></Gvb_theme>
-
-          <div class="gvb_user_info_menu">
-            <a-dropdown>
-              <div class="gvb_user_info_menu_dropdown">
-                <img src="/image/user_head.jpg">
-                <span class="gvb_user_info_menu_dropdown_span">time1043</span>
-                <IconMenu></IconMenu>
-              </div>
-              <template #content>
-                <a-doption>Option 1</a-doption>
-                <a-doption disabled>Option 2</a-doption>
-                <a-doption>Option 3</a-doption>
-                <a-doption>Option 4</a-doption>
-                <a-doption>Option 5</a-doption>
-              </template>
-            </a-dropdown>
-          </div>
-
+          <Gvb_user_info_menu></Gvb_user_info_menu>
         </div>
       </div>
 
@@ -57,11 +39,13 @@ import Gvb_logo from "@/components/admin/gvb_logo.vue";
 import Gvb_menu from "@/components/admin/gvb_menu.vue";
 import Gvb_bread_crumb from "@/components/admin/gvb_bread_crumb.vue";
 import {IconHome, IconMenu,} from '@arco-design/web-vue/es/icon';
-import type {Component} from "vue";
 import {useRoute, useRouter} from "vue-router";
+import {useStore} from "@/stores/counter";
+import Gvb_user_info_menu from "@/components/common/gvb_user_info_menu.vue";
 
 const router = useRouter()
 const route = useRoute()
+const store = useStore()
 
 function goIndex() {
   router.push({name: "index"})
@@ -82,12 +66,23 @@ function goIndex() {
     border-right: 1px solid var(--bg);
     height: 100vh;
     background-color: var(--color-bg-1);
+    transition: all .3s;
+    position: relative;
+  }
+
+  aside.collapsed {
+    width: 48px;
+
+    & ~ main {
+      width: calc(100% - 48px);
+    }
   }
 
   main {
     width: calc(100% - 240px);
     overflow-x: hidden;
     overflow-y: auto;
+    transition: all .3s;
 
     .gvb_head {
       width: 100%;
@@ -109,7 +104,7 @@ function goIndex() {
           font-size: 16px;
           transition: color .3s;
 
-          &:hover{
+          &:hover {
             color: var(--active);
           }
         }

@@ -16,6 +16,11 @@ const router = createRouter({
             ]
         },
         {
+            path: '/login',
+            name: 'login',
+            component: () => import('../views/login/index.vue'),
+        },
+        {
             path: "/admin",
             name: "admin",
             component: () => import('../views/admin/index.vue'),
@@ -89,7 +94,13 @@ const router = createRouter({
                             name: "menu_list",
                             meta: {title: "菜单列表"},
                             component: () => import('../views/admin/system/menu_list.vue'),
-                        }
+                        },
+                        {
+                            path: "log_list",
+                            name: "log_list",
+                            meta: {title: "系统日志"},
+                            component: () => import('../views/admin/system/log_list.vue'),
+                        },
                     ]
                 },
 

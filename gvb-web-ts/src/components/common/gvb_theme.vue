@@ -10,6 +10,5 @@ import {IconSun, IconMoon} from "@arco-design/web-vue/es/icon";
 import {useStore} from "@/stores/counter";
 
 const store = useStore()
-store.loadTheme()
 
 </script>
