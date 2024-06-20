@@ -33,6 +33,7 @@ go.work
 
 # Ignore yaml files
 *.yaml
+.air.toml
 
 # Ignore .idea directory
 **/.idea/
